@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>打印</title>
+    <link rel="stylesheet" href="PrintArea.css"/>
+    <link href="print.css" rel="stylesheet" media="print"/>
+    <style>
+      @media print {
+        .PageNext {
+          PAGE-BREAK-AFTER: always;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="printarea">
+      要打印的部分
+    </div>
+    <input name="bt" type="button" value="打印" onclick="doPrint();"/>
+    <!-- js -->
+    <script src="jquery-1.9.0.js"></script>
+    <script src="jquery.PrintArea.js"></script>
+    <script>
+      var hkey_root,
+        hkey_path,
+        hkey_key
+      hkey_root = "HKEY_CURRENT_USER"
+      hkey_path = "\\Software\\Microsoft\\Internet Explorer\\PageSetup\\"
+      // 设置页眉页脚为空
+      function PageSetup_Null() {
+        try {
+          var RegWsh = new ActiveXObject("WScript.Shell");
+          hkey_key = "header";
+          RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "");
+          hkey_key = "footer";
+          RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "");
+        } catch (e) {
+          console.log('index err', e);
+        }
+      }
+      function doPrint() {
+        PageSetup_Null();
+        $('#printarea').printArea({mode: 'iframe', popWd: 900});
+      }
+    </script>
+  </body>
+</html>
